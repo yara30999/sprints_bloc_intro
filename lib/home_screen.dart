@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprints_bloc_intro/bloc/counter_bloc/counter_bloc.dart';
+import 'package:sprints_bloc_intro/bloc/theme_bloc/theme_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -48,6 +49,24 @@ class HomeScreen extends StatelessWidget {
                     },
                     icon: Icon(Icons.remove)),
               ],
+            ),
+            const SizedBox(height: 40),
+            BlocConsumer<ThemeBloc, ThemeState>(
+              listener: (context, state) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('${state.themeData.toString()} turned on :)'),
+                  ),
+                );
+              },
+              builder: (context, state) {
+                return ElevatedButton(
+                  onPressed: () {
+                    context.read<ThemeBloc>().add(ToggleTheme());
+                  },
+                  child: Text('Toggle Theme'),
+                );
+              },
             ),
           ],
         ),

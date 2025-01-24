@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sprints_bloc_intro/bloc/counter_bloc/counter_bloc.dart';
+import 'package:sprints_bloc_intro/bloc/theme_bloc/theme_bloc.dart';
 import 'package:sprints_bloc_intro/home_screen.dart';
 
 void main() {
@@ -12,11 +13,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => CounterBloc(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: const HomeScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => CounterBloc()),
+        BlocProvider(create: (_) => ThemeBloc()),
+      ],
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, themeState) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: themeState.themeData,
+            home: const HomeScreen(),
+          );
+        },
       ),
     );
   }
